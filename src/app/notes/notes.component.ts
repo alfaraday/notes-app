@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Note } from '../Note';
 
 @Component({
@@ -8,16 +8,10 @@ import { Note } from '../Note';
 })
 export class NotesComponent implements OnInit {
 
-  
-note : Note = {
-        id : 1,
-        title : "shopping list",
-        date : Date.now().toString(),
-        body : "milk, butter, ice cream, strawberries, apples, grapes, jelly"
-       }
-  constructor() { }
+  @Input() _notes;
 
-  ngOnInit() {
-  }
+  constructor() {}
+
+  ngOnInit() {}
 
 }
