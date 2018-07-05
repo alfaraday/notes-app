@@ -12,5 +12,4 @@ export class NotesService {
   getNotes(): Observable<Note[]> {
     return of(NOTES);
   }
-
 }
