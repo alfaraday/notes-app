@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from "@angular/forms";
-import { Note } from "../Note";
+import { Note } from "../models";
 import { NOTES } from '../mock-data';
 
 @Component({
@@ -10,21 +10,26 @@ import { NOTES } from '../mock-data';
 })
 export class CreateNoteComponent implements OnInit {
   constructor() {}
-   //Set up the data for our list of notes that will contain every note that we create
-   _notes : Note[];
 
   //Create a new, epmty note, which is referenced in our form
   note = new Note();
-  
   //Declare that the form has not been submitted yet.
   submitted = false;
+  //Import mock data to the notes list.
+  _notes = NOTES;
 
-  //Function to submit form, in referenced in our NgSubmit
   submitForm = form => {
+    //Declare that the form has been submitted.
     this.submitted = true;
-    this._notes.push(this.note);
-  };
+    const update_notes = this._notes;
+    //Add notes submitted through the form to the list of notes displayed on the page.
+    update_notes.push({
+      id: 0,
+      title: form.value.title,
+      content: form.value.content
+    });
+    this._notes = update_notes;
+  }
 
   ngOnInit() {}
-
 }

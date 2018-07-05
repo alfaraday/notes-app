@@ -11,7 +11,7 @@ import { CreateNoteComponent } from './create-note/create-note.component';
   declarations: [
     AppComponent,
     NotesComponent,
-    CreateNoteComponent
+    CreateNoteComponent,
   ],
   imports: [
     BrowserModule,
