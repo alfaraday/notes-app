@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { Note } from "../models";
 import { NOTES } from '../mock-data';
+import { NotesService} from '../notes.service';
 
 @Component({
   selector: 'app-create-note',
@@ -9,7 +10,7 @@ import { NOTES } from '../mock-data';
   styleUrls: ['./create-note.component.css']
 })
 export class CreateNoteComponent implements OnInit {
-  constructor() {}
+  constructor(private notesService: NotesService) {}
 
   //Create a new, epmty note, which is referenced in our form
   note = new Note();
@@ -21,14 +22,18 @@ export class CreateNoteComponent implements OnInit {
   submitForm = form => {
     //Declare that the form has been submitted.
     this.submitted = true;
-    const update_notes = this._notes;
-    //Add notes submitted through the form to the list of notes displayed on the page.
-    update_notes.push({
-      id: 0,
-      title: form.value.title,
-      content: form.value.content
+    this.notesService.addNote(this.note)
+        .subscribe(new_note  => {
+            this._notes.push(new_note);
+            console.log("notes", this._notes, "note", new_note);
+        });
+  }
+
+  deleteNote(id, e) : void {
+    this.notesService.deleteNote(id).subscribe(() => console.log("Note deleted"));
+    this._notes = this._notes.filter(function( obj ) {
+      return obj.id !== id;
     });
-    this._notes = update_notes;
   }
 
   ngOnInit() {}

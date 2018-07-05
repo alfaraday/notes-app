@@ -3,13 +3,40 @@ import { NOTES } from './mock-data';
 import { Note } from './models';
 import {Observable} from 'rxjs'
 import { of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map, tap } from 'rxjs/operators';
+import { BaseService } from "./base.service";
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable()
 export class NotesService {
 
-  constructor() { }
+  constructor(private http: HttpClient, private baseService: BaseService) { }
+
+  notesUrl = this.baseService.baseUrl + "/notes";
 
   getNotes(): Observable<Note[]> {
-    return of(NOTES);
+    return this.http.get<Note[]>(this.notesUrl);
+  }
+
+  addNote (note: Note): Observable<Note> {
+    return this.http.post<Note>(this.notesUrl, note, httpOptions).pipe(
+      tap((note: Note) => console.log(`added note w/ id=${note.id}`),
+          error => {
+            if (error.status == 400)
+              alert(error.error.message)
+          }  
+      )
+    );
+  }
+
+  deleteNote (id: number): Observable<Note> {
+    console.log("deleting", id);
+    return this.http.delete<Note>(this.notesUrl + '/' + id, httpOptions).pipe(
+      tap((note: Note) => console.log(`deleted note w/ id=${id}`))
+    );
   }
 }

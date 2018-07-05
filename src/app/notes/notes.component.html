@@ -1,7 +1,12 @@
-<nav class="notes">
-    <ul>
-      <li  *ngFor="let note of _notes">
-        <span class="title">{{note.title}}</span> {{note.content}}
-      </li>
-    </ul>
-</nav>
+<article class="notes">
+    
+  <h1>Notes</h1>
+  
+  <ul>
+    <li *ngFor="let note of notes">
+      <button (click)="deleteNote(note.id, $event)">x</button>
+      <span class="title">{{note.title}}</span> {{note.content}}
+    </li>
+  </ul>
+  
+</article>
